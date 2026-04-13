@@ -12,7 +12,7 @@ public class Cliente {
             System.out.println("Quina es la paraula clau per voler tancar la connexió? ");
             String paraulaClau = sc.nextLine();
 
-            Socket socket = new Socket("127.0.0.1", port);
+            Socket socket = new Socket("127.0.0.1", port); // Port amb el host correcte.
             System.out.println("Conectado al servidor... OK");
 
             // Salida de datos
