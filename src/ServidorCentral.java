@@ -73,7 +73,7 @@ public class ServidorCentral {
         servidorActiu = true;
         synchronized (filConversa) {
             for (FilConversa f : filConversa) {
-                f.adeuServidor();
+                f.adeuSocket();
         }
 
 
