@@ -72,8 +72,8 @@ public class ServidorCentral {
     public static void tancarServidor() {
         servidorActiu = true;
         synchronized (filConversa) {
-            for (FilConversa f : filConversa) {
-                f.adeuSocket();
+            for (FilConversa fc : filConversa) {
+                fc.adeuSocket();
         }
 
 
