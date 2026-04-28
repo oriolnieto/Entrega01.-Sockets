@@ -43,7 +43,7 @@ public class ServidorCentral {
                             salaBuida = true;
                             System.out.println("CONNECTION FROM CLIENT: " + (filConversa.size() + 1));
 
-                            FilConversa filConversa1 = new FilConversa();
+                            FilConversa filConversa1 = new FilConversa(socket);
                             filConversa.add(filConversa1);
                             filConversa1.start();
                         }

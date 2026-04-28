@@ -16,32 +16,48 @@ public class FilConversa extends Thread {
             socket.close();
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Erro ao carregar o socket (eu farei)" + e.getMessage());
         }
 
     }
 
+    @Override
     public void run() {
 
-        try (BufferedWriter bw = new BufferedWriter(new InputStreamReader(socket.getInputStream()));
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
              PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
              Scanner sc = new Scanner(System.in);
         ) {
-            String msgClau = bw.readLine();
+            msgClau = br.readLine();
             System.out.println("INICIALIZING CHAT");
 
             while(ServidorCentral.servidorActiu) {
-                String msgClient = bw.nextLine();
+                String msgClient = br.readLine();
                 if (msgClient == null) {
-                    ServidorCentral.filConversa.remove(this);
+
                     return;
                 }
 
                 System.out.println("El client diu: " + msgClient);
 
+                if (msgClau.equals(msgClient)) {
+                    System.out.println("PARAULA CLAU!");
+                    return;
+                }
+
                 if (msgClau.equals(ServidorCentral.paraulaClau)) {
                     System.out.println("PARAULA CLAU! TANCANT SERVIDOR");
                     ServidorCentral.tancarServidor();
+                    return;
+                }
+
+                System.out.println("SENDING MESSAGE TO CLIENT... ");
+                String resposta = sc.nextLine();
+                pw.println(resposta);
+
+                if (resposta.equals(msgClau)) {
+                    ServidorCentral.tancarServidor();
+                    return;
                 }
             }
 
