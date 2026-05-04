@@ -29,7 +29,7 @@ public class FilConversa extends Thread {
              Scanner sc = new Scanner(System.in);
         ) {
             msgClau = br.readLine();
-            System.out.println("INICIALIZING CHAT");
+            System.out.println("Inicialitzant Chat!");
 
             while(ServidorCentral.servidorActiu) {
                 String msgClient = br.readLine();
@@ -46,12 +46,12 @@ public class FilConversa extends Thread {
                 }
 
                 if (msgClau.equals(ServidorCentral.paraulaClau)) {
-                    System.out.println("PARAULA CLAU! TANCANT SERVIDOR");
+                    System.out.println("PARAULA CLAU! Tancant Servidor");
                     ServidorCentral.tancarServidor();
                     return;
                 }
 
-                System.out.println("SENDING MESSAGE TO CLIENT... ");
+                System.out.println("Enviant missatge al Client..");
                 String resposta = sc.nextLine();
                 pw.println(resposta);
 
@@ -62,18 +62,12 @@ public class FilConversa extends Thread {
             }
 
         } catch (IOException e) {
-
-        } finally {
+            System.out.println("Error al fer run del socket! " + e.getMessage());
+        }
+        finally {
             ServidorCentral.filConversa.remove(this);
             System.out.println("S'esta tancant el xat!");
             adeuSocket();
         }
-
         }
-
-
-
-
-
-
 }

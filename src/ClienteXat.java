@@ -23,49 +23,44 @@ public class ClienteXat {
         ){
 
             pw.println(paraulaClau);
-            System.out.println("INICIALIZING CLIENT...");
-            System.out.println("INICIALIZING CHAT...");
+            System.out.println("Inicialitzant Client..");
+            System.out.println("Inicialitzant Chat...");
 
             boolean continuar = true;
 
             while(continuar){
-                System.out.println("SENDING TO SERVER...");
+                System.out.println("Enviant al Servidor..");
                 String msg = sc.nextLine();
                 pw.println(msg);
 
                 if (msg.equals(paraulaClau)) {
-                    System.out.println("PARAULA CLAU! CLOSING CHAT... ");
+                    System.out.println("PARAULA CLAU! Tancant el Xat.. ");
                     continuar = false;
 
                 } else {
                    String resposta = br.readLine();
 
                    if  (resposta == null) {
-                       System.out.println("SERVER HAS CLOSED THE CHAT...");
+                       System.out.println("El Servidor ha tancat el Xat..");
                        continuar = false;
 
                    } else  {
-                       System.out.println("SENDING TO SERVER " + resposta);
+                       System.out.println("Enviant al Servidor " + resposta);
 
                        if (resposta.equals(paraulaClau)) {
-                           System.out.println("PARAULA CLAU! CLOSING CHAT... ");
+                           System.out.println("PARAULA CLAU! Tancant el Xat.. ");
                            continuar = false;
                        }
                    }
                 }
-
             }
 
         } catch (IOException e) {
-            System.out.println("ERRORE SERVER...");
+            System.out.println("Error del Servidor..");
 
         } finally {
-            System.out.println("adeusiau!");
+            System.out.println("Adeu Siau!");
             sc.close();
         }
-
     }
-
-
-
 }

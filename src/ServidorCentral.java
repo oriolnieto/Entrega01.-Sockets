@@ -5,13 +5,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
-
 public class ServidorCentral {
     public static String paraulaClau = "adeuandreu";
     public static List<FilConversa> filConversa = Collections.synchronizedList(new ArrayList<>());
     public static boolean servidorActiu = true;
     public static boolean salaBuida = false;
-
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -24,24 +22,23 @@ public class ServidorCentral {
 
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("Server started at port: " + port);
-            System.out.println("Servidor criado com sucesso! (eu farei)");
+            System.out.println("Servidor creat de forma correcta!");
 
             while (servidorActiu) {
 
                 if (salaBuida && filConversa.isEmpty()) {
-                    System.out.println("NO CLIENTS, CLOSING THE SERVER");
+                    System.out.println("No hi han clients, tancant el server..");
                     servidorActiu = false;
                 }
 
                 serverSocket.setSoTimeout(1000); // timeout per fer refresh del bucle i tornar a evaluar la condició
-
 
                 if (servidorActiu) {
                     try {
                         if (filConversa.size() < maxClients) {
                             Socket socket = serverSocket.accept();
                             salaBuida = true;
-                            System.out.println("CONNECTION FROM CLIENT: " + (filConversa.size() + 1));
+                            System.out.println("Connexió del Client: " + (filConversa.size() + 1));
 
                             FilConversa filConversa1 = new FilConversa(socket);
                             filConversa.add(filConversa1);
@@ -50,25 +47,17 @@ public class ServidorCentral {
 
                     } catch (SocketException e) {
                         // el timeout gestiona l'exepció i en cas d'error es fa refresh del bucle per evaluar la condició novament
-
+                        System.out.println("Error al conectar el servidor! " + e.getMessage());
                     }
-
                 }
-
             }
-
         } catch (IOException e) {
-            System.out.println("ERROR: Could not listen on port: " + port);
-
-
+            System.out.println("ERROR: Problema al Port: " + port);
         } finally {
-            System.out.println("adeusiau! :D");
+            System.out.println("Adeu Andreu! :D");
             sc.close();
         }
-
     }
-
-
     public static void tancarServidor() {
         servidorActiu = false;
         synchronized (filConversa) {
