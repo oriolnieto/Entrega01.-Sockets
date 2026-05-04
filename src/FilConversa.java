@@ -16,7 +16,7 @@ public class FilConversa extends Thread {
             socket.close();
 
         } catch (IOException e) {
-            System.out.println("Erro ao carregar o socket (eu farei)" + e.getMessage());
+            System.out.println("Error al carregar el socket! " + e.getMessage());
         }
 
     }
@@ -65,6 +65,7 @@ public class FilConversa extends Thread {
 
         } finally {
             ServidorCentral.filConversa.remove(this);
+            System.out.println("S'esta tancant el xat!");
             adeuSocket();
         }
 

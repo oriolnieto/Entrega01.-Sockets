@@ -70,13 +70,14 @@ public class ServidorCentral {
 
 
     public static void tancarServidor() {
-        servidorActiu = true;
+        servidorActiu = false;
         synchronized (filConversa) {
             for (FilConversa fc : filConversa) {
                 fc.adeuSocket();
+                System.out.println("Tancant server..");
         }
-
-
+            System.out.println("Adeu!");
+            System.exit(0);
         }
     }
 }
