@@ -51,7 +51,7 @@ public class FilConversa extends Thread {
                     return;
                 }
 
-                System.out.println("Enviant missatge al Client..");
+                System.out.println("Enviar missatge al Client:");
                 String resposta = sc.nextLine();
                 pw.println(resposta);
 

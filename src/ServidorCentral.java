@@ -14,11 +14,14 @@ public class ServidorCentral {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
+        if (args.length < 1) {
+            System.out.println("Error: Falta l'argument del número de clients.");
+            return;
+        }
+        int maxClients = Integer.parseInt(args[0]);
+
         System.out.println("A quin port et vols conectar? (Recomanació: 1234)");
         int port = Integer.parseInt(sc.nextLine());
-
-        System.out.println("Quants clients vols que tingui la sala? ");
-        int maxClients = sc.nextInt();
 
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("Server started at port: " + port);
@@ -31,7 +34,7 @@ public class ServidorCentral {
                     servidorActiu = false;
                 }
 
-                serverSocket.setSoTimeout(1000); // timeout per fer refresh del bucle i tornar a evaluar la condició
+                serverSocket.setSoTimeout(1000);
 
                 if (servidorActiu) {
                     try {
@@ -45,14 +48,15 @@ public class ServidorCentral {
                             filConversa1.start();
                         }
 
+                    } catch (SocketTimeoutException e) {
+                        //gestionar sense dir res per no tallar el bucle
                     } catch (SocketException e) {
-                        // el timeout gestiona l'exepció i en cas d'error es fa refresh del bucle per evaluar la condició novament
                         System.out.println("Error al conectar el servidor! " + e.getMessage());
                     }
                 }
             }
         } catch (IOException e) {
-            System.out.println("ERROR: Problema al Port: " + port);
+            System.out.println("ERROR: Problema al Port: " + port + " | "  + e.getMessage());
         } finally {
             System.out.println("Adeu Andreu! :D");
             sc.close();
@@ -64,7 +68,7 @@ public class ServidorCentral {
             for (FilConversa fc : filConversa) {
                 fc.adeuSocket();
                 System.out.println("Tancant server..");
-        }
+            }
             System.out.println("Adeu!");
             System.exit(0);
         }

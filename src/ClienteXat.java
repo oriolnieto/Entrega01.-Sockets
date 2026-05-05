@@ -29,7 +29,7 @@ public class ClienteXat {
             boolean continuar = true;
 
             while(continuar){
-                System.out.println("Enviant al Servidor..");
+                System.out.println("Enviar al Servidor:");
                 String msg = sc.nextLine();
                 pw.println(msg);
 
@@ -45,7 +45,7 @@ public class ClienteXat {
                        continuar = false;
 
                    } else  {
-                       System.out.println("Enviant al Servidor " + resposta);
+                       System.out.println("Enviant al Servidor: " + resposta);
 
                        if (resposta.equals(paraulaClau)) {
                            System.out.println("PARAULA CLAU! Tancant el Xat.. ");
