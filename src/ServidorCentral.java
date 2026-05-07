@@ -10,10 +10,10 @@ public class ServidorCentral {
     public static List<FilConversa> filConversa = Collections.synchronizedList(new ArrayList<>());
     public static boolean servidorActiu = true;
     public static boolean salaBuida = false;
+    public static Scanner sc = new Scanner(System.in);
+    public static List<FilConversa> colaResposta = new ArrayList<>();
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-
         if (args.length < 1) {
             System.out.println("Error: Falta l'argument del número de clients.");
             return;
@@ -22,6 +22,43 @@ public class ServidorCentral {
 
         System.out.println("A quin port et vols conectar? (Recomanació: 1234)");
         int port = Integer.parseInt(sc.nextLine());
+
+        Thread respondedor = new Thread(() -> {
+            while (servidorActiu) {
+                FilConversa fc = null;
+
+                synchronized (colaResposta) {
+                    while (colaResposta.isEmpty() && servidorActiu) {
+                        try { colaResposta.wait(); } catch (InterruptedException e) { return; }
+                    }
+                    if (!colaResposta.isEmpty()) {
+                        fc = colaResposta.remove(0);
+                    }
+                }
+
+                if (fc != null && !fc.socket.isClosed() && servidorActiu) {
+                    System.out.println("Enviar missatge al Client:");
+                    String resposta = sc.nextLine();
+
+                    if (resposta.equals(paraulaClau)) {
+                        System.out.println("PARAULA CLAU SERVIDOR! Tancant tot..");
+                        tancarServidor();
+                    } else if (resposta.equals(fc.getMsgClau())) {
+                        System.out.println("PARAULA CLAU CLIENT! Tancant xat del client..");
+                        fc.enviarResposta(resposta);
+                        fc.adeuSocket();
+                    } else {
+                        fc.enviarResposta(resposta);
+                    }
+
+                    synchronized (fc) {
+                        fc.notify();
+                    }
+                }
+            }
+        });
+        respondedor.setDaemon(true);
+        respondedor.start();
 
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("Server started at port: " + port);
@@ -56,7 +93,7 @@ public class ServidorCentral {
                 }
             }
         } catch (IOException e) {
-            System.out.println("ERROR: Problema al Port: " + port + " | "  + e.getMessage());
+            System.out.println("ERROR: Problema al Port: " + port + " | " + e.getMessage());
         } finally {
             System.out.println("Adeu Andreu! :D");
             sc.close();

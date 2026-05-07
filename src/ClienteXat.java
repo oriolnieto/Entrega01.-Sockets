@@ -45,7 +45,7 @@ public class ClienteXat {
                        continuar = false;
 
                    } else  {
-                       System.out.println("Enviant al Servidor: " + resposta);
+                       System.out.println("Rebut del Servidor: " + resposta);
 
                        if (resposta.equals(paraulaClau)) {
                            System.out.println("PARAULA CLAU! Tancant el Xat.. ");
